@@ -1,11 +1,12 @@
 
-import { BadRequestException, InternalServerErrorException, NotFoundException, Delete } from '@nestjs/common';
+import { BadRequestException, InternalServerErrorException, NotFoundException} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
 import { NotFoundError } from 'rxjs';
 import { CreatePokemonDto } from './dto/create-pokemon.dto';
 import { UpdatePokemonDto } from './dto/update-pokemon.dto';
 import { Pokemon } from './entities/pokemon.entity';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 
 export class PokemonService {
@@ -28,8 +29,15 @@ export class PokemonService {
     }
   }
 
-  findAll() {
-    return this.pokemonModel.find();
+  findAll(queryParameters:PaginationDto ) {
+    
+    const { limit=10,offset=0 }= queryParameters;
+    
+    return this.pokemonModel.find().
+    limit(limit).
+    skip(offset).
+    select('-__V')//Quitar la columna de --V de la base de datos
+    ;
   }
 
   async findOne(term: string) {

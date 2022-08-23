@@ -48,6 +48,13 @@ npm i -g @nestjs/cli
 docker-compose up -d(Dentro del directorio)
 ```
 
+
+5. Reconstruir base de datos con la semilla
+
+```
+http://localhost:3000/api/v2/pokemon/
+```
+
 ## STACK USADO
 
 * MongoDB
